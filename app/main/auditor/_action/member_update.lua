@@ -231,7 +231,7 @@ end
 
 -- Saving
 member.auditor=false;
-member.lqfb_access=true;
+member.lqfb_access=false;
 local merr = member:try_save()
 if merr then
   slot.put_into("error", (_("Error while updating member, database reported:<br /><br /> (#{errormessage})"):gsub("#{errormessage}", tostring(merr.message))))
