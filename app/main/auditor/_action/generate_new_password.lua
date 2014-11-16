@@ -4,6 +4,7 @@ local member = Member:by_id(id)
 local new_password = multirand.string( 24, "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz" )
 
 member:set_password(new_password)
+member:save()
 
 	local subject = config.mail_subject_prefix .. _"new password"
   local content = slot.use_temporary(function()

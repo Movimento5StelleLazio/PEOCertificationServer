@@ -46,6 +46,9 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
 
 
         local location={}
+        local id_scan = _"NO"
+        local id_picture_scan = _"NO"
+        local nin_scan = _"NO"
 
         if member_data and member_data.location then
           for v in  string.gmatch(member_data.location, "[^%s]+") do
@@ -57,6 +60,19 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
         local residence_unit = region[1][1]..", "..province[1][1]..", "..city[1][1]
         
+        if member then
+        	if db:query({"SELECT COUNT(*) FROM idcard_scan WHERE member_id = ? AND scan_type = 'id_front'", member.id}, "opt_object")[1] ~= 0 and db:query({"SELECT COUNT(*) FROM idcard_scan WHERE member_id = ? AND scan_type = 'id_rear'", member.id}, "opt_object")[1] ~= 0 then
+		      	id_scan = _"YES"
+		      end
+			    
+			    if db:query({"SELECT COUNT(*) FROM idcard_scan WHERE member_id = ? AND scan_type = 'id_picture'", member.id}, "opt_object")[1] ~= 0 then
+		      	id_picture_scan = _"YES"
+		      end
+		      
+		      if db:query({"SELECT COUNT(*) FROM idcard_scan WHERE member_id = ? AND ( scan_type = 'nin' OR scan_type = 'health_insurance')", member.id}, "opt_object")[1] ~= 0 then
+	      		nin_scan = _"YES"
+	      	end
+        end
         
         slot.put("<table>",
         "<tr>",
@@ -79,9 +95,9 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
           "<td style='border: 2px solid black; background: #feffe9; padding: 5px'>"..active.."</td>",
           "<td style='border: 2px solid black; background: #f2ebb7; padding: 5px'>"..format.date(member.activated, { nil_as = "N/A" } ).."</td>",
           "<td style='border: 2px solid black; background: #feffe9; padding: 5px'>"..residence_unit.."</td>",
-          "<td style='border: 2px solid black; background: #f2ebb7; padding: 5px'>".."NO".."</td>",
-          "<td style='border: 2px solid black; background: #feffe9; padding: 5px'>".."NO".."</td>",
-          "<td style='border: 2px solid black; background: #f2ebb7; padding: 5px'>".."NO".."</td>",
+          "<td style='border: 2px solid black; background: #f2ebb7; padding: 5px'>"..id_scan.."</td>",
+          "<td style='border: 2px solid black; background: #feffe9; padding: 5px'>"..nin_scan.."</td>",
+          "<td style='border: 2px solid black; background: #f2ebb7; padding: 5px'>"..id_picture_scan.."</td>",
         "</tr>",
         "<tr>",
         "<td></td>",
@@ -107,9 +123,9 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
     ui.container{ attr = { class = "row-fluid text-center" }, content = function()
       ui.heading{ level = 1, attr = { class = "span8 offset2 uppercase"  }, content = _"Select the action you want to execute:" }
     end }
-    ui.container{ attr = { class = "row-fluid text-center spaceline2" }, content = function()
+    ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4"  },
         module = "auditor",
         view = "index",
         action = "generate_new_password",
@@ -121,9 +137,10 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4"  },
         module = "auditor",
-        view = "index",
+				action = "force_deactivation",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Disable account" }
@@ -131,9 +148,9 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
     end }
-    ui.container{ attr = { class = "row-fluid text-center" }, content = function()
+    ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4"  },
         module = "auditor",
         action = "generate_new_invite_code",
         id = member.id,
@@ -144,9 +161,10 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4"  },
         module = "auditor",
-        view = "index",
+        action = "force_activation",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Activate account without email invitation" }
@@ -154,11 +172,12 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
     end }
-    ui.container{ attr = { class = "row-fluid text-center" }, content = function()
+    ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
-        view = "index",
+        action = "not_implemented",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Broken token substitution" }
@@ -166,9 +185,10 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
-        view = "index",
+        action = "not_implemented",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Dead battery token substitution" }
@@ -176,11 +196,12 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
     end }
-    ui.container{ attr = { class = "row-fluid text-center" }, content = function()
+    ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
-        view = "index",
+        action = "not_implemented",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Lost or stolen token substitution" }
@@ -188,9 +209,10 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
-        view = "index",
+        action = "not_implemented",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Token block and account cancellation" }
@@ -198,11 +220,12 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
     end }
-    ui.container{ attr = { class = "row-fluid text-center" }, content = function()
+    ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
-        view = "index",
+        action = "not_implemented",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Print new user registration modules" }
@@ -210,9 +233,10 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
         end
       }
       ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick"  },
+        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
-        view = "index",
+        action = "not_implemented",
+        id = id,
         content = function()
           ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
             ui.heading{level=5,content=_"Print token substiution or cancellation modules" }
