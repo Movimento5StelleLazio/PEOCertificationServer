@@ -1,10 +1,10 @@
-if cgi.cookies.liquid_feedback_session then
-  app.session = Session:by_ident(cgi.cookies.liquid_feedback_session)
+if cgi.cookies.liquid_feedback_session_cert then
+  app.session = Session:by_ident(cgi.cookies.liquid_feedback_session_cert)
 end
 if not app.session then
   app.session = Session:new()
   request.set_cookie{
-    name = "liquid_feedback_session",
+    name = "liquid_feedback_session_cert",
     value = app.session.ident
   }
 end

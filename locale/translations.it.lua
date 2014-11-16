@@ -253,6 +253,8 @@ return {
 ["Back to timeline"] = "Ritorna alla cronologia";
 ["Ballot of '#{member_name}' for issue ##{issue_id}"] = "Scrutinio di '#{member_name}' per la questione ##{issue_id}";
 ["Become a member"] = "Partecipa";
+["before 24h."] = "entro 24 ore.";
+["Best wishes."] = "Cordiali Saluti";
 ["Birthday"] = "Data di nascita";
 ["Year of birth"] = "Anno di nascita";
 ["Month of birth"] = "Mese di nascita";
@@ -454,7 +456,7 @@ return {
 ["I like to receive notifications by email about events in my areas and issues:"] = "Desidero ricevere le notifiche eMail per gli eventi delle mie aree e questioni:";
 ["Id"] = false;
 ["Identification"] = "Identificazione";
-["If this link is not working, please open following url in your web browser:\n\n"] = "Se questo link non dovesse funzionare, aprire il seguente indirizzo nel browser:\n\n";
+["If this link is not working, please open following url in your web browser:"] = "Se questo link non dovesse funzionare, aprire il seguente indirizzo nel browser:";
 ["Ignore Areas"] = "Ignora aree";
 ["Ignore initiative"] = "Ignora proposta";
 ["Ignore member"] = "Ignora utente";
@@ -631,9 +633,9 @@ return {
 ["Old password"] = "Vecchia password";
 ["Old password is wrong"] = "La vecchia password è errata";
 ["Oldest"] = "Più vecchio";
-["On that page please enter the confirmation code:\n\n"] = "Su questa pagina inserire il codice di conferma:\n\n";
-["On that page please enter the invite key:\n\n"] = "Inserire il codice di invito in questa pagina:\n\n";
-["On that page please enter the reset code:\n\n"] = "Inserire il codice di ripristino in questa pagina:\n\n";
+["On that page please enter the confirmation code:"] = "Su questa pagina inserire il codice di conferma:";
+["On that page please enter the invite key:"] = "Inserire il codice di invito in questa pagina:";
+["On that page please enter the reset code:"] = "Inserire il codice di ripristino in questa pagina:";
 ["One issue"] = "Una questione";
 ["One issue you are interested in"] = "Questione di tuo interesse";
 ["One more area in this unit"] = "Un'altra area in questa unità";
@@ -720,6 +722,7 @@ return {
 ["Registration (step 2 of 3: Personal information)"] = "Registrazione (Passo 2 di 3: Informazioni personali)";
 ["Registration (step 3 of 3: Terms of use and password)"] = "Registrazione (Passo 3 di 3: Termini d'uso e password)";
 ["Rejected"] = "Rifiutato";
+["Remember that you have to verify your email address before you can access assemblies."] = "Ricorda che devi confermare il tuo indirizzo email prima di poter accedere alle assemblee";
 ["Remove"] = "Rimuovi";
 ["Remove from contacts"] = "Rimuovi dai contatti";
 ["Remove initiator"] = "Rimuovi autore";
@@ -826,6 +829,7 @@ return {
 ["The draft of this initiative has been updated!"] = "La bozza di questa proposta è stata aggiornata!";
 ["The drafts do not differ"] = "Le bozze sono identiche";
 ["The initiators suggest to support the following initiative:"] = "Gli autori suggeriscono di sostenere la proposta:";
+["The Parelon Team"] = "Il Gruppo Parelon";
 ["This email address is too short!"] = "L'indirizzo eMail inserito è troppo corto!";
 ["This initiative"] = "Questa proposta";
 ["This initiative has been revoked at #{revoked}"] = "Questa proposta è stata ritirata il #{revoked}";
@@ -926,7 +930,8 @@ return {
 ["You are interested"] = "Sei interessato";
 ["You are interested in this issue"] = "Sei interessato alla questione";
 ["You are invited to #{count} initiative(s)"] = "Sei invitato come autore per #{count} proposta(e)";
-["You are invited to LiquidFeedback. To register please click the following link:\n\n"] = "Sei invitato su LiquidFeedback. Per registrarti clicca sul seguente link:\n\n";
+["You are invited to LiquidFeedback. To register please click the following link:"] = "Sei invitato su LiquidFeedback. Per registrarti clicca sul seguente link:";
+["You are invited to Parlamento Elettronico Online. To register please click the following link:"] = "Sei stato invitato a registrarti al Parlamento Elettronico Online. Per registrarti per favore clicca sul link seguente:";
 ["You are invited to become initiator of this initiative."] = "Sei stato invitato a diventare autore di questa proposta.";
 ["You are member"] = "Sei iscritto";
 ["You are not participating in any of the #{count} areas in this unit"] = "Non stai partecipando a nessuna delle #{count} aree di questa divisione";
@@ -1068,9 +1073,6 @@ return {
 ["< new >"]="<nuovo>";
 ["< select template >"]="seleziona template...";
 ["Elected?"] = "Eletto?";
-["Hello\n\n"] = "Buongiorno\n\n";
-    ["You are invited to Parlamento Elettronico Online. To register please click the following link:\n\n"] = "Sei stato invitato/a a entrare in Parlamento Elettronico Online. Per registrarti clicca sul seguente indirizzo:\n\n";
-    ["If this link is not working, please open following url in your web browser:\n\n"] = "Se il link non dovesse funzionare, per favore apri il seguente indirizzo web dal tuo browser:\n\n";
-    ["On that page please enter the invite key:\n\n"] = "Sulla pagina che si aprirà inserisci il seguente codice di invito:\n\n";
-    ["The invite code will expire in two days: after that, you will need a new invite code generated from your auditor.\n\nBest wishes.\n\nParelon Team"] = "Il codice di invito scadrà tra due giorni: dopodicché il tuo certificatore dovrà generarne un altro.\n\nCordiali Saluti\n\nParelon Team";
+["Auditor?"] = "Certificatore?";
+["Admin?"] = "Admin?";
 }

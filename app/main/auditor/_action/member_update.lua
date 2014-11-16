@@ -49,6 +49,27 @@ if deactivate then
   member.active = false
 end
 
+local elected = param.get("elected", atom.boolean)
+if elected ~= nil then
+    member.elected = elected
+end
+
+local auditor = param.get("auditor", atom.boolean)
+if auditor ~= nil then
+    member.auditor = auditor
+end
+
+member.lqfb_access = true
+--local lqfb_access = param.get("lqfb_access", atom.boolean)
+--if lqfb_access ~= nil then
+--    member.lqfb_access = lqfb_access
+--end
+
+local admin = param.get("admin", atom.boolean)
+if admin ~= nil then
+    member.admin = admin
+end
+
 -- Check user first name
 local firstname = param.get("firstname")
 if firstname then
@@ -230,8 +251,6 @@ else
 end
 
 -- Saving
-member.auditor=false;
-member.lqfb_access=false;
 local merr = member:try_save()
 if merr then
   slot.put_into("error", (_("Error while updating member, database reported:<br /><br /> (#{errormessage})"):gsub("#{errormessage}", tostring(merr.message))))
@@ -247,21 +266,22 @@ if mderr then
 end
 
 -- Create new privileges: the new member inherits them from the auditor
-
-if not member.activated then
+local count_privileges = db:query("SELECT COUNT(*) FROM privilege WHERE member_id = " ..tostring(member.id))
+if count_privileges[1].count == 0 then
 	local auditor_privileges = Privilege:new_selector()
 		:add_where("member_id = " .. app.session.member_id)
 		:exec()
-		
-	for i, auditor in ipairs(auditor_privileges) do
-		privilege = Privilege:new()
-		privilege.unit_id = auditor.unit_id
-		privilege.member_id = member.id
-		privilege.voting_right = true
-		local mderr = privilege:try_save()
-		if mderr then
-			slot.put_into("error", (_("Error while updating member sensitive data, database reported:<br /><br /> (#{errormessage})"):gsub("#{errormessage}", tostring(mderr.message))))
-			return false
+	if #(Privilege:new_selector():add_where("member_id = " .. member.id):exec()) == 0 then
+		for i, auditor in ipairs(auditor_privileges) do
+			privilege = Privilege:new()
+			privilege.unit_id = auditor.unit_id
+			privilege.member_id = member.id
+			privilege.voting_right = true
+			local mderr = privilege:try_save()
+			if mderr then
+				slot.put_into("error", (_("Error while updating member sensitive data, database reported:<br /><br /> (#{errormessage})"):gsub("#{errormessage}", tostring(mderr.message))))
+				return false
+			end
 		end
 	end
 end

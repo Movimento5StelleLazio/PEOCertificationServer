@@ -245,6 +245,7 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
           name = "token_serial",
           value = param.get("token_serial")
         }        
+	if member then 
         ui.field.boolean {
         	name = "elected",
         	label = _"Eletto",
@@ -252,8 +253,70 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
         	container_attr={class="control-group"},
           attr={class="auditor_input",placeholder=_"Elected"},
           style = "checkbox",
-          value = param.get("elected",atom.boolean)
+          value = param.get("elected", atom.boolean) or member.elected
         }
+	else 
+	 ui.field.boolean {
+         name = "elected",
+         label = _"Eletto",
+         label_attr={class="auditor_input_label"},
+         container_attr={class="control-group"},
+         attr={class="auditor_input",placeholder=_"Elected"},
+         style = "checkbox",
+         value = param.get("elected", atom.boolean) or false
+        }
+        end
+
+if member then
+      
+ if app.session.member.elected then
+                      ui.field.boolean {
+                        record = member,
+                        name = "auditor",
+                        label = _"Certificatore",
+                        label_attr={class="auditor_input_label"},
+                        container_attr={class="control-group"},
+                        attr={class="auditor_input",placeholder=_"Auditor"},
+                        style = "checkbox",
+                        value = param.get("auditor", atom.boolean) or member.auditor
+                      }
+                      ui.field.boolean {
+                        record = member,
+                        name = "admin",
+                        label = _"Admin",
+                        label_attr={class="auditor_input_label"},
+                        container_attr={class="control-group"},
+                        attr={class="auditor_input",placeholder=_"Admin"},
+                        style = "checkbox",
+                        value = param.get("admin", atom.boolean) or member.admin
+        }
+        end
+		      	
+else
+
+ if app.session.member.elected then
+                      ui.field.boolean {
+                        record = member,
+                        name = "auditor",
+                        label = _"Certificatore",
+                        label_attr={class="auditor_input_label"},
+                        container_attr={class="control-group"},
+                        attr={class="auditor_input",placeholder=_"Auditor"},
+                        style = "checkbox",
+                        value = param.get("auditor", atom.boolean) or false
+                      }
+                      ui.field.boolean {
+                        record = member,
+                        name = "admin",
+                        label = _"Admin",
+                        label_attr={class="auditor_input_label"},
+                        container_attr={class="control-group"},
+                        attr={class="auditor_input",placeholder=_"Admin"},
+                        style = "checkbox",
+                        value = param.get("admin", atom.boolean) or false
+        }
+        end
+end
      
         --end }
 
@@ -265,7 +328,7 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence address"},
+          attr={class="auditor_input",placeholder=_"Residence address", onchange="if(getElementsByName('domicile_address')[0].value == '') getElementsByName('domicile_address')[0].value = getElementsByName('residence_address')[0].value;"},
           label = _"Residence address",
           name = "residence_address",
           value = param.get("residence_address")
@@ -274,7 +337,7 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence city"},
+          attr={class="auditor_input",placeholder=_"Residence city", onchange="if(getElementsByName('domicile_city')[0].value == '') getElementsByName('domicile_city')[0].value = getElementsByName('residence_city')[0].value;"},
           label = _"Residence city",
           name = "residence_city",
           value = param.get("residence_city")
@@ -283,7 +346,7 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence province"},
+          attr={class="auditor_input",placeholder=_"Residence province", onchange="if(getElementsByName('domicile_province')[0].value == '') getElementsByName('domicile_province')[0].value = getElementsByName('residence_province')[0].value;"},
           label = _"Residence province",
           name = "residence_province",
           value = param.get("residence_province")
@@ -292,7 +355,7 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence postcode"},
+          attr={class="auditor_input",placeholder=_"Residence postcode", onchange="if(getElementsByName('domicile_postcode')[0].value == '') getElementsByName('domicile_postcode')[0].value = getElementsByName('residence_postcode')[0].value;"},
           label = _"Residence postcode",
           name = "residence_postcode",
           value = param.get("residence_postcode")

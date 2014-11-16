@@ -1,13 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-FRONTENDSRC=$HOME/parelon/PEOCertificationServer #/opt/ParelonCertFrontend
-WEBMCPSRC=$HOME/parelon/ParlamentoElettronicoM5S/extras/webmcp #/opt/ParelonCertFrontend/extras/webmcp
-FRONTENDDST=$HOME/parelon/liquid_feedback_frontend_cert
-WEBMCPDST=$HOME/parelon/webmcp
-HELPDIR=${FRONTENDDST}/locale/help/
-ROCKETWIKICMD=$HOME/parelon/rocketwiki-lqfb/rocketwiki-lqfb
-CONFIGFILE=$HOME/parelon/PEOCertificationServer/extras/myconfig.lua #/opt/ParelonCertFrontend/extras/myconfig.lua
-INITFILE=$HOME/parelon/PEOCertificationServer/extras/init.lua #/opt/ParelonCertFrontend/extras/init.lua
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
+FRONTENDSRC=.. #/opt/ParelonCertFrontend
+WEBMCPSRC=../../ParlamentoElettronicoM5S/extras/webmcp #/opt/ParelonCertFrontend/extras/webmcp
+FRONTENDDST=../../liquid_feedback_frontend_cert
+WEBMCPDST=../../webmcp
+HELPDIR=${FRONTENDDST}/locale/help
+ROCKETWIKICMD=../../rocketwiki-lqfb/rocketwiki-lqfb
+CONFIGFILE=myconfig.lua #/opt/ParelonCertFrontend/extras/myconfig.lua
+INITFILE=init.lua #/opt/ParelonCertFrontend/extras/init.lua
 HTTPDUSER=www-data
 
 if [ "z$(id -u)" != "z0" ];then
@@ -150,7 +152,6 @@ make clean 1>/dev/null
 cd -
 
 chown -R $(id -g -n $(who am i | awk '{print $1}')):$(who am i | awk '{print $1}') $FRONTENDDST
-chown -R $(id -g -n $(who am i | awk '{print $1}')):$(who am i | awk '{print $1}') $COREDST
 chown -R $(id -g -n $(who am i | awk '{print $1}')):$(who am i | awk '{print $1}') $WEBMCPDST
 chown -R www-data $FRONTENDDST/tmp
 
