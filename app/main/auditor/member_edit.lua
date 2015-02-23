@@ -244,81 +244,72 @@ ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
           label = _"Token serial",
           name = "token_serial",
           value = param.get("token_serial")
-        }        
-	if member then 
-        ui.field.boolean {
-        	name = "elected",
-        	label = _"Eletto",
-        	label_attr={class="auditor_input_label"},
-        	container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Elected"},
-          style = "checkbox",
-          value = param.get("elected", atom.boolean) or member.elected
         }
-	else 
-	 ui.field.boolean {
-         name = "elected",
-         label = _"Eletto",
-         label_attr={class="auditor_input_label"},
-         container_attr={class="control-group"},
-         attr={class="auditor_input",placeholder=_"Elected"},
-         style = "checkbox",
-         value = param.get("elected", atom.boolean) or false
-        }
+        if member then        
+		      ui.field.boolean {
+		      	name = "elected",
+		      	label = _"Eletto",
+		      	label_attr={class="auditor_input_label"},
+		      	container_attr={class="control-group"},
+		        attr={class="auditor_input",placeholder=_"Elected"},
+		        style = "checkbox",
+		        value = param.get("elected", atom.boolean) or member.elected
+		      }
+		    else
+		    	ui.field.boolean {
+		    		record = member,
+		      	name = "elected",
+		      	label = _"Eletto",
+		      	label_attr={class="auditor_input_label"},
+		      	container_attr={class="control-group"},
+		        attr={class="auditor_input",placeholder=_"Elected"},
+		        style = "checkbox",
+		        value = param.get("elected", atom.boolean) or false
+		      }
+		    end
+        if app.session.member.admin then
+        	if member then
+				    ui.field.boolean {
+				    	record = member,
+				    	name = "auditor",
+				    	label = _"Certificatore",
+				    	label_attr={class="auditor_input_label"},
+				    	container_attr={class="control-group"},
+				      attr={class="auditor_input",placeholder=_"Auditor"},
+				      style = "checkbox",
+				      value = param.get("auditor", atom.boolean) or member.auditor
+				    }
+				    ui.field.boolean {
+				    	record = member,
+				    	name = "admin",
+				    	label = _"Admin",
+				    	label_attr={class="auditor_input_label"},
+				    	container_attr={class="control-group"},
+				      attr={class="auditor_input",placeholder=_"Admin"},
+				      style = "checkbox",
+				      value = param.get("admin", atom.boolean) or member.admin
+		      	}
+				  else
+				  	ui.field.boolean {
+				  		name = "auditor",
+				    	label = _"Certificatore",
+				    	label_attr={class="auditor_input_label"},
+				    	container_attr={class="control-group"},
+				      attr={class="auditor_input",placeholder=_"Auditor"},
+				      style = "checkbox",
+				      value = param.get("auditor", atom.boolean) or false
+				    }
+				    ui.field.boolean {
+				    	name = "admin",
+				    	label = _"Admin",
+				    	label_attr={class="auditor_input_label"},
+				    	container_attr={class="control-group"},
+				      attr={class="auditor_input",placeholder=_"Admin"},
+				      style = "checkbox",
+				      value = param.get("admin", atom.boolean) or false
+		      	}
+				  end	      
         end
-
-if member then
-      
- if app.session.member.elected then
-                      ui.field.boolean {
-                        record = member,
-                        name = "auditor",
-                        label = _"Certificatore",
-                        label_attr={class="auditor_input_label"},
-                        container_attr={class="control-group"},
-                        attr={class="auditor_input",placeholder=_"Auditor"},
-                        style = "checkbox",
-                        value = param.get("auditor", atom.boolean) or member.auditor
-                      }
-                      ui.field.boolean {
-                        record = member,
-                        name = "admin",
-                        label = _"Admin",
-                        label_attr={class="auditor_input_label"},
-                        container_attr={class="control-group"},
-                        attr={class="auditor_input",placeholder=_"Admin"},
-                        style = "checkbox",
-                        value = param.get("admin", atom.boolean) or member.admin
-        }
-        end
-		      	
-else
-
- if app.session.member.elected then
-                      ui.field.boolean {
-                        record = member,
-                        name = "auditor",
-                        label = _"Certificatore",
-                        label_attr={class="auditor_input_label"},
-                        container_attr={class="control-group"},
-                        attr={class="auditor_input",placeholder=_"Auditor"},
-                        style = "checkbox",
-                        value = param.get("auditor", atom.boolean) or false
-                      }
-                      ui.field.boolean {
-                        record = member,
-                        name = "admin",
-                        label = _"Admin",
-                        label_attr={class="auditor_input_label"},
-                        container_attr={class="control-group"},
-                        attr={class="auditor_input",placeholder=_"Admin"},
-                        style = "checkbox",
-                        value = param.get("admin", atom.boolean) or false
-        }
-        end
-end
-     
-        --end }
 
         --[[ 
           Residence
@@ -328,7 +319,7 @@ end
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence address", onchange="if(getElementsByName('domicile_address')[0].value == '') getElementsByName('domicile_address')[0].value = getElementsByName('residence_address')[0].value;"},
+          attr={class="auditor_input",placeholder=_"Residence address", onchange="if(getElementsByName('domicile_address')[0].value == '') { getElementsByName('domicile_address')[0].value = getElementsByName('residence_address')[0].value; return; }"},
           label = _"Residence address",
           name = "residence_address",
           value = param.get("residence_address")
@@ -337,7 +328,7 @@ end
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence city", onchange="if(getElementsByName('domicile_city')[0].value == '') getElementsByName('domicile_city')[0].value = getElementsByName('residence_city')[0].value;"},
+          attr={class="auditor_input",placeholder=_"Residence city", onchange="if(getElementsByName('domicile_city')[0].value == '') { getElementsByName('domicile_city')[0].value = getElementsByName('residence_city')[0].value; return; }"},
           label = _"Residence city",
           name = "residence_city",
           value = param.get("residence_city")
@@ -346,7 +337,7 @@ end
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence province", onchange="if(getElementsByName('domicile_province')[0].value == '') getElementsByName('domicile_province')[0].value = getElementsByName('residence_province')[0].value;"},
+          attr={class="auditor_input",placeholder=_"Residence province", onchange="if(getElementsByName('domicile_province')[0].value == '') { getElementsByName('domicile_province')[0].value = getElementsByName('residence_province')[0].value; return; }"},
           label = _"Residence province",
           name = "residence_province",
           value = param.get("residence_province")
@@ -355,7 +346,7 @@ end
           record = member_data,
           label_attr={class="auditor_input_label"},
           container_attr={class="control-group"},
-          attr={class="auditor_input",placeholder=_"Residence postcode", onchange="if(getElementsByName('domicile_postcode')[0].value == '') getElementsByName('domicile_postcode')[0].value = getElementsByName('residence_postcode')[0].value;"},
+          attr={class="auditor_input",placeholder=_"Residence postcode", onchange="if(getElementsByName('domicile_postcode')[0].value == '') { getElementsByName('domicile_postcode')[0].value = getElementsByName('residence_postcode')[0].value; return; }"},
           label = _"Residence postcode",
           name = "residence_postcode",
           value = param.get("residence_postcode")
@@ -470,6 +461,81 @@ end
 
         ui.script{script = '$("#provinces").chained("#regions");' }
         ui.script{script = '$("#cities").chained("#provinces");' }
+
+
+        local units_selector
+        local units
+
+        if not param.get_id() then
+            -- Create new privileges: the new member inherits them from the auditor
+            units_selector = app.session.member.units
+            units = Unit:get_flattened_tree{} --units_selector:exec()
+            ui.list {
+                        records = units,
+                        columns = {
+                              {
+                                    field_attr = { style = "font-weight:bold;font-size:22px;"},
+                                  content = function(unit)
+                                      for i = 1, unit.depth - 1 do
+                                          slot.put("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+                                      end
+                                      local style = ""
+                                      if not unit.active then
+                                          style = "text-decoration: line-through;"
+                                      end
+                                      ui.link {
+                                            name = "unit_" .. unit.id,
+                                            text = unit.name
+                                      }
+                                  end
+                              },
+                              {
+                                    content = function(unit)
+                                            ui.field.boolean {
+                                                name = "unit_" .. unit.id,
+                                                  --label = unit.name,
+                                                  value = app.session.member:has_voting_right_for_unit_id(unit.id)
+                                              }
+                                    end
+                              }
+                        }
+                }
+        else
+            units_selector = Unit:new_selector()
+            units = Unit:get_flattened_tree{} --units_selector:exec()
+            ui.list {
+                        records = units,
+                        columns = {
+                              {
+                                    field_attr = { style = "font-weight:bold;font-size:22px;"},
+                                  content = function(unit)
+                                      for i = 1, unit.depth - 1 do
+                                          slot.put("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+                                      end
+                                      local style = ""
+                                      if not unit.active then
+                                          style = "text-decoration: line-through;"
+                                      end
+                                      ui.link {
+                                            name = "unit_" .. unit.id,
+                                            text = unit.name
+                                      }
+                                  end
+                              },
+                              {
+                                    content = function(unit)
+                                            ui.field.boolean {
+                                            name = "unit_" .. unit.id,
+                                                  --label = unit.name,
+                                                  value = member:has_voting_right_for_unit_id(unit.id)
+                                              }
+                                    end
+                              }
+                        }
+                }
+        end
+
+
 
         ui.container{ attr = { class = "row-fluid text-center spaceline2" }, content = function()
           ui.container{ attr = { class = "span6 offset3" }, content = function()
