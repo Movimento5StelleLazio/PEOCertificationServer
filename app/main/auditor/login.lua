@@ -5,7 +5,11 @@ slot.set_layout("custom")
 --      ui.svgtxt{ svg_attr={style="height: 100px"}, attr={style="font-size: 55px"},content = _"Auditor login" }
 --    end }
   end }
-  
+
+  if app.session.member ~= nil then
+    request.redirect { module = "auditor", view = "index" }
+    return
+  end
 
   ui.container{ attr = { class = "row-fluid spaceline3" }, content = function ()
     ui.form{
@@ -47,33 +51,17 @@ slot.set_layout("custom")
             ui.tag{ tag="input", attr = { type="password", placeholder=_'Password', class = "span8 input-large", name="password" }, content = '' }
           end }
 
-          ui.container {
-                                attr = { class = "row-fluid" },
-                                content = function()
-                                    ui.tag { tag = "label", attr = { class = "span4" }, content = _ 'OTP' }
-                                    ui.script { script = 'document.getElementById("username_field").focus();' }
-                                    ui.tag { tag = "input", attr = { id = "otp_field", type = "otp", placeholder = _ 'OTP', class = "span8 input-large", name = "otp" }, content = '' }
-                                end
-                            }
-
-                            ui.container {
-                                attr = { class = "row-fluid text-center" },
-                                content = function()
-                                    ui.container {
-                                        attr = { class = "span6 offset3" },
-                                        content = function()
-                                            ui.script { static = "js/auth.js" }
-                                            ui.tag {
-                                            		tag = "a",
-                                            		attr = { href = "javascript:void(0)", onclick="checkOtpToken();", class = "btn btn-primary btn-large large_btn spaceline fixclick" },
-                                            		content = function()
-                                                    ui.heading { level = 3, attr = { class = "inline-block" }, content = _ "Login" }
-                                                end
-                                            }
-                                        end
-                                    }
-                                end
-                             }
+          ui.container{ attr = { class = "row-fluid text-center" }, content = function()
+            ui.container{ attr = { class = "span6 offset3" }, content = function()
+              ui.tag{
+                tag="button",
+                attr = { type="submit", class="btn btn-primary btn-large fixclick" },
+                content= function()
+                  ui.heading{ level=4, attr = { class="inline-block"}, content= _"Login"}
+                end
+              }
+            end }
+          end }
         end }
       end
     }

@@ -59,11 +59,10 @@ if auditor ~= nil then
     member.auditor = auditor
 end
 
-member.lqfb_access = true
---local lqfb_access = param.get("lqfb_access", atom.boolean)
---if lqfb_access ~= nil then
---    member.lqfb_access = lqfb_access
---end
+local lqfb_access = param.get("lqfb_access", atom.boolean)
+if lqfb_access ~= nil then
+    member.lqfb_access = lqfb_access
+end
 
 local admin = param.get("admin", atom.boolean)
 if admin ~= nil then
@@ -265,25 +264,20 @@ if mderr then
   return false
 end
 
--- Create new privileges: the new member inherits them from the auditor
-local count_privileges = db:query("SELECT COUNT(*) FROM privilege WHERE member_id = " ..tostring(member.id))
-if count_privileges[1].count == 0 then
-	local auditor_privileges = Privilege:new_selector()
-		:add_where("member_id = " .. app.session.member_id)
-		:exec()
-	if #(Privilege:new_selector():add_where("member_id = " .. member.id):exec()) == 0 then
-		for i, auditor in ipairs(auditor_privileges) do
-			privilege = Privilege:new()
-			privilege.unit_id = auditor.unit_id
-			privilege.member_id = member.id
-			privilege.voting_right = true
-			local mderr = privilege:try_save()
-			if mderr then
-				slot.put_into("error", (_("Error while updating member sensitive data, database reported:<br /><br /> (#{errormessage})"):gsub("#{errormessage}", tostring(mderr.message))))
-				return false
-			end
-		end
-	end
+local units = Unit:new_selector():add_field("privilege.member_id NOTNULL", "privilege_exists"):add_field("privilege.voting_right", "voting_right"):left_join("privilege", nil, { "privilege.member_id = ? AND privilege.unit_id = unit.id", member.id }):exec()
+
+for i, unit in ipairs(units) do
+    local value = param.get("unit_" .. unit.id, atom.boolean)
+    if value and not unit.privilege_exists then
+        privilege = Privilege:new()
+        privilege.unit_id = unit.id
+        privilege.member_id = member.id
+        privilege.voting_right = true
+        privilege:save()
+    elseif not value and unit.privilege_exists then
+        local privilege = Privilege:by_pk(unit.id, member.id)
+        privilege:destroy()
+    end
 end
 
 member:send_invitation()

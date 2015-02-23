@@ -173,17 +173,30 @@ ui.container{ attr = { class = "row-fluid" }, content = function()
       }
     end }
     ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
-      ui.link{
-        attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
-        module = "auditor",
-        action = "not_implemented",
-        id = id,
-        content = function()
-          ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
-            ui.heading{level=5,content=_"Broken token substitution" }
-          end }
-        end
-      }
+          ui.link{
+            attr = { class="btn btn-primary proc_btn fixclick offset1 span4"  },
+            module = "auditor",
+            view = "member_unit",
+            id = member.id,
+            content = function()
+              ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
+                ui.heading{level=5,content=_"Edit unit access privileges" }
+              end }
+            end
+          }
+        end }
+        ui.container{ attr = { class = "row-fluid spaceline2" }, content = function()
+          ui.link{
+            attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
+            module = "auditor",
+            action = "not_implemented",
+            id = id,
+            content = function()
+              ui.container{ attr = { class = "proc_btn table-cell" }, content = function()
+                ui.heading{level=5,content=_"Broken token substitution" }
+              end }
+            end
+          }
       ui.link{
         attr = { class="btn btn-primary proc_btn fixclick offset1 span4 disabled"  },
         module = "auditor",
